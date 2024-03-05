@@ -5,6 +5,7 @@
   "scripts": {
     "build": "webpack",
     "start": "webpack serve --open",
+    "test": "jest",
     "cy:open": "cypress open"
   },
   "devDependencies": {
