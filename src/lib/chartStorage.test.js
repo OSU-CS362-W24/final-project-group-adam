@@ -122,8 +122,53 @@ describe('loadAllSavedCharts function', () => {
 describe('loadSavedChart function', () => {
 })
 
+// Matthew
+// For referance the updateCurrentChartData operates when the DOM detects a change in chart inputs.
+// It then calls it will the new chart data to replace the old chart data
 describe('updateCurrentChartData function', () => {
+    test('should currentChartData with full data chart to JSON format', () => {
+        // Initialize expected localStorage start/end state
+        // Input is in JS object format
+        const input = {
+            data: [{x: "4", y: "4"}, {x: "1", y: "1"}],
+            title: "xdd",
+            type: "line",
+            xLabel: "x",
+            yLabel: "y",
+            color: "#ff4500"
+        }
+        // Output is in JSON format
+        const output = '{"data":[{"x":"4","y":"4"},{"x":"1","y":"1"}],"title":"xdd","type":"line","xLabel":"x","yLabel":"y","color":"#ff4500"}'
+
+        // Initialize localStorage state
+        window.localStorage.setItem('currentChartData', input)
+
+        // Update chart
+        chartStorage.updateCurrentChartData(input)
+
+        // Assert chart saved in currentChartData
+        expect(window.localStorage.getItem('currentChartData')).toBe(output)
+    })   
+    test('should update currentChartData with nothing', () => {
+        // Initialize expected localStorage start/end state
+        // Input is in JS object format
+        const input = {}
+        // Output is in JSON format
+        const output = '{}'
+
+        // Initialize localStorage state
+        window.localStorage.setItem('currentChartData', input)
+
+        // Update chart
+        chartStorage.updateCurrentChartData(input)
+
+        // Assert chart saved in currentChartData
+        expect(window.localStorage.getItem('currentChartData')).toBe(output)
+    })   
+
+
 })
 
+// Matthew
 describe('loadCurrentChartData function', () => {
 })
