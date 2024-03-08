@@ -125,6 +125,7 @@ describe('loadSavedChart function', () => {
 // Matthew
 // For referance the updateCurrentChartData operates when the DOM detects a change in chart inputs.
 // It then calls it will the new chart data to replace the old chart data
+// As this function only replaces currentChartData rather than updating it, testing for "updates" is not actually necessary.
 describe('updateCurrentChartData function', () => {
     test('should currentChartData with full data chart to JSON format', () => {
         // Initialize expected localStorage start/end state
@@ -171,4 +172,38 @@ describe('updateCurrentChartData function', () => {
 
 // Matthew
 describe('loadCurrentChartData function', () => {
+    test('should return a JS object of the current chart in localStorage', () => {
+
+        // Object representation of the input
+        const currentChart = {
+            data: [{x: "4", y: "4"}, {x: "1", y: "1"}],
+            title: "xdd",
+            type: "line",
+            xLabel: "x",
+            yLabel: "y",
+            color: "#ff4500"
+        }
+        // input is in JSON format
+        const input = '{"data":[{"x":"4","y":"4"},{"x":"1","y":"1"}],"title":"xdd","type":"line","xLabel":"x","yLabel":"y","color":"#ff4500"}'
+
+        // Initialize localStorage state
+        window.localStorage.setItem('currentChartData', input)
+
+        // Load currentChart to result
+        const result = chartStorage.loadCurrentChartData()
+
+        // Assert that the result is strictly equal to current chart
+        expect(result).toStrictEqual(currentChart)
+    })
+    test('should return a JS object of the current null chart in localStorage', () => {
+
+        // Object representation of the input
+        const currentChart = {}
+
+        // Load currentChart to result
+        const result = chartStorage.loadCurrentChartData()
+
+        // Assert that the result is strictly equal to current chart
+        expect(result).toStrictEqual(currentChart)
+    }) 
 })
