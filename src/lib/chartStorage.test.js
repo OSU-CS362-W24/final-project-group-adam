@@ -116,10 +116,86 @@ describe('saveChart function', () => {
     })
 })
 
+//Akshat
 describe('loadAllSavedCharts function', () => {
+    
+    test('returns array of all saved charts', () => {
+    
+        const chart = {
+            type: 'bar',
+            data: [{x: 1, y: 2}],
+            xLabel: 'x',
+            yLabel: 'y',
+            title: 'exampleidk',
+            color: '#2ab57b'
+        }
+        const newChart = {
+            type: 'line',
+            data: [{x: 3, y: 15}],
+            xLabel: 'x',
+            yLabel: 'y',
+            title: 'newChart',
+            color: '#b57d2a'
+        }
+
+
+        chartStorage.saveChart(chart)
+        chartStorage.saveChart(newChart)
+
+        window.localStorage.getItem('savedCharts', chart)
+        window.localStorage.getItem('savedCharts', newChart)
+
+        const result = chartStorage.loadAllSavedCharts()
+
+        expect(result).toStrictEqual([chart, newChart])
+    })
+    
 })
 
+//Akshat
 describe('loadSavedChart function', () => {
+
+    test('returns nothing if provided with non created chart', () => {
+
+        const chart = {
+            type: 'bar',
+            data: [{x: 1, y: 2}],
+            xLabel: 'x',
+            yLabel: 'y',
+            title: 'exampleidk',
+            color: '#2ab57b'
+        }
+
+        window.localStorage.getItem('savedCharts', chart)
+
+        //save chart
+        const result = chartStorage.loadSavedChart()
+
+        expect(result).toEqual({})
+
+    })
+
+    test('returns specific chart from array of charts', () => {
+
+        const chart = {
+            type: 'bar',
+            data: [{x: 1, y: 2}],
+            xLabel: 'x',
+            yLabel: 'y',
+            title: 'exampleidk',
+            color: '#2ab57b'
+        }
+
+        window.localStorage.getItem('savedCharts', chart)
+
+        //save chart
+        chartStorage.saveChart(chart)
+        const result = chartStorage.loadSavedChart()
+
+        expect(result).toEqual({})
+
+    })
+    
 })
 
 // Matthew
