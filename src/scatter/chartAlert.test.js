@@ -17,6 +17,13 @@ function initDomFromFiles(htmlPath, jsPath) {
 	require(jsPath)
 }
 
+window.alert = jest.fn()
+
+// In your test, you can clear the mock before each test to ensure a clean state
+beforeEach(() => {
+ window.alert.mockClear()
+})
+
 
 describe("integration test for alert message when no data input", function(){
     test("alert message when no data input", async() => {
@@ -35,7 +42,7 @@ describe("integration test for alert message when no data input", function(){
         await user.type(yLabel, "y")
         await user.click(button)
 
-        const alert = spy.mock.lastCall[0]
+        const alert = await spy.mock.lastCall[0]
 
         expect(alert).toBe("Error: No data specified!")
     })
