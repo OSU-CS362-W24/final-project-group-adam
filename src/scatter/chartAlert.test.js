@@ -18,8 +18,6 @@ function initDomFromFiles(htmlPath, jsPath) {
 }
 
 window.alert = jest.fn()
-
-// In your test, you can clear the mock before each test to ensure a clean state
 beforeEach(() => {
  window.alert.mockClear()
 })
