@@ -46,39 +46,27 @@ describe("integration test for alert message when no data input", function(){
     })
 
     /*
-
     test("alert message when no x and y input", async() => {
 
-        
-
         initDomFromFiles(`${__dirname}/scatter.html`,`${__dirname}/scatter.js`)
-
-        const yInputElement = document.createElement('input');
-        yInputElement.setAttribute('type', 'number');
-        yInputElement.classList.add('y-value-input');
-        document.body.appendChild(yInputElement);
-
-        const xInputElement = document.createElement('input');
-        xInputElement.setAttribute('type', 'number');
-        xInputElement.classList.add('x-value-input');
-        document.body.appendChild(xInputElement);
 
         const spy = jest.spyOn(window, "alert")
 
         //generate chart button, x & y label inputs
-        const button = document.getElementById("generate-chart-btn")
-        const xInput = document.querySelector('input.x-value-input[type="number"]');
-        const yInput = document.querySelector('input.y-value-input[type="number"]');
+        //const button = document.getElementById("generate-chart-btn")
+        const button = domTesting.getByRole(document, "button", {name: 'Generate chart'})
+        let xInput = domTesting.getAllByLabelText(document, "X")
+        let yInput = domTesting.getAllByLabelText(document, "Y")
 
         const user = userEvent.setup()
-        await user.type(xInput, "1")
-        await user.type(yInput, "2")
+        await user.type(xInput[0], '1')
+        await user.type(yInput[0], '2')
         await user.click(button)
-        
-        const alert = spy.mock.lastCall[0]
+
+        const alert = spy.mock.lastCall[0][0]
 
         expect(alert).toBe("Error: Must specify a label for both X and Y!")
     })
-
     */
+
 })
