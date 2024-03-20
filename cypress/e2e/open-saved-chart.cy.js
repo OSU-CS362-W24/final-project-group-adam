@@ -1,4 +1,6 @@
-it('Chart is saved to gallery', () => {
+const { findAllByLabelText } = require("@testing-library/dom");
+
+it('saved chart can be opened', () => {
     cy.visit('/line.html')
 
 
@@ -50,5 +52,9 @@ it('Chart is saved to gallery', () => {
     // Assert that the title of the graph appears
     cy.findByText('Cats vs. Dogs').click()
 
-    cy.findByRole('img').should('exist');
+    cy.findAllByLabelText('Chart title').should('have.value', 'Cats vs. Dogs');
+
+    cy.findAllByLabelText('X').should('have.value', '1')
+    cy.findAllByLabelText('Y').should('have.value', '3')
+    cy.findByRole('img').should('exist') 
 });
