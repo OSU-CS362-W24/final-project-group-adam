@@ -166,10 +166,10 @@ describe('loadSavedChart function', () => {
             color: '#2ab57b'
         }
 
-        window.localStorage.getItem('savedCharts', chart)
+        window.localStorage.setItem('savedCharts', JSON.stringify([chart]))
 
-        //save chart
-        const result = chartStorage.loadSavedChart()
+        //Load chart
+        const result = chartStorage.loadSavedChart(1)
 
         expect(result).toEqual({})
 
@@ -177,7 +177,7 @@ describe('loadSavedChart function', () => {
 
     test('returns specific chart from array of charts', () => {
 
-        const chart = {
+        const chart1 = {
             type: 'bar',
             data: [{x: 1, y: 2}],
             xLabel: 'x',
@@ -185,14 +185,21 @@ describe('loadSavedChart function', () => {
             title: 'exampleidk',
             color: '#2ab57b'
         }
+        const chart2 = {
+            type: 'bar',
+            data: [{x: 3, y: 4}],
+            xLabel: 'label #1',
+            yLabel: 'label #1',
+            title: 'a great title',
+            color: '#ff8000'
+        }
 
-        window.localStorage.getItem('savedCharts', chart)
+        window.localStorage.setItem('savedCharts', JSON.stringify([chart1, chart2]))
 
-        //save chart
-        chartStorage.saveChart(chart)
-        const result = chartStorage.loadSavedChart()
+        //Load chart
+        const result = chartStorage.loadSavedChart(1)
 
-        expect(result).toEqual({})
+        expect(result).toEqual(chart2)
 
     })
     
