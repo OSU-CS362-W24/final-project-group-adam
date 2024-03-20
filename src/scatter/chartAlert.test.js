@@ -45,9 +45,10 @@ describe("integration test for alert message when no data input", function(){
         expect(alert).toBe("Error: No data specified!")
     })
 
-    /*
+    
     test("alert message when no x and y input", async() => {
 
+        jest.resetModules()
         initDomFromFiles(`${__dirname}/scatter.html`,`${__dirname}/scatter.js`)
 
         const spy = jest.spyOn(window, "alert")
@@ -55,18 +56,22 @@ describe("integration test for alert message when no data input", function(){
         //generate chart button, x & y label inputs
         //const button = document.getElementById("generate-chart-btn")
         const button = domTesting.getByRole(document, "button", {name: 'Generate chart'})
-        let xInput = domTesting.getAllByLabelText(document, "X")
-        let yInput = domTesting.getAllByLabelText(document, "Y")
+        const xLabel = domTesting.getByLabelText(document, "X label")
+        const yLabel = domTesting.getByLabelText(document, "Y label")
+        const xInput = domTesting.getByLabelText(document, "X ");
+        const yInput = domTesting.getByLabelText(document, "Y ")
+
+        expect(xLabel).not.toHaveValue()
+        expect(yLabel).not.toHaveValue()
 
         const user = userEvent.setup()
         await user.type(xInput[0], '1')
         await user.type(yInput[0], '2')
         await user.click(button)
 
-        const alert = spy.mock.lastCall[0][0]
+        const alert = spy.mock.lastCall[0]
 
         expect(alert).toBe("Error: Must specify a label for both X and Y!")
     })
-    */
 
 })
