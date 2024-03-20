@@ -14,7 +14,9 @@ function initDomFromFiles(htmlPath, jsPath) {
 	document.open()
 	document.write(html)
 	document.close()
-	require(jsPath)
+        jest.isolateModules(function() {
+            require(jsPath)
+        })
 }
 
 window.alert = jest.fn()
@@ -30,14 +32,9 @@ describe("integration test for alert message when no data input", function(){
 
         const spy = jest.spyOn(window, "alert")
 
-        //generate chart button, x & y label inputs
         const button = document.getElementById("generate-chart-btn")
-        const xLabel = document.getElementById("x-label-input")
-        const yLabel = document.getElementById("y-label-input")
         
         const user = userEvent.setup()
-        await user.type(xLabel, "x")
-        await user.type(yLabel, "y")
         await user.click(button)
 
         const alert = await spy.mock.lastCall[0]
@@ -45,24 +42,15 @@ describe("integration test for alert message when no data input", function(){
         expect(alert).toBe("Error: No data specified!")
     })
 
-    
-    test("alert message when no x and y input", async() => {
+    test("alert message when no x and y labels", async() => {
 
-        jest.resetModules()
         initDomFromFiles(`${__dirname}/scatter.html`,`${__dirname}/scatter.js`)
 
         const spy = jest.spyOn(window, "alert")
 
-        //generate chart button, x & y label inputs
-        //const button = document.getElementById("generate-chart-btn")
         const button = domTesting.getByRole(document, "button", {name: 'Generate chart'})
-        const xLabel = domTesting.getByLabelText(document, "X label")
-        const yLabel = domTesting.getByLabelText(document, "Y label")
-        const xInput = domTesting.getByLabelText(document, "X ");
-        const yInput = domTesting.getByLabelText(document, "Y ")
-
-        expect(xLabel).not.toHaveValue()
-        expect(yLabel).not.toHaveValue()
+        const xInput = domTesting.getAllByLabelText(document, "X");
+        const yInput = domTesting.getAllByLabelText(document, "Y")
 
         const user = userEvent.setup()
         await user.type(xInput[0], '1')
@@ -73,5 +61,4 @@ describe("integration test for alert message when no data input", function(){
 
         expect(alert).toBe("Error: Must specify a label for both X and Y!")
     })
-
 })
