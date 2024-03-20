@@ -1,4 +1,4 @@
-it('Chart is saved to gallery', () => {
+it('Chart data is maintained across pages', () => {
     cy.visit('/line.html')
 
 
