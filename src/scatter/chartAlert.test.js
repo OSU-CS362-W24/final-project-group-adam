@@ -14,7 +14,9 @@ function initDomFromFiles(htmlPath, jsPath) {
 	document.open()
 	document.write(html)
 	document.close()
-	require(jsPath)
+        jest.isolateModules(function() {
+            require(jsPath)
+        })
 }
 
 window.alert = jest.fn()
@@ -30,14 +32,9 @@ describe("integration test for alert message when no data input", function(){
 
         const spy = jest.spyOn(window, "alert")
 
-        //generate chart button, x & y label inputs
         const button = document.getElementById("generate-chart-btn")
-        const xLabel = document.getElementById("x-label-input")
-        const yLabel = document.getElementById("y-label-input")
         
         const user = userEvent.setup()
-        await user.type(xLabel, "x")
-        await user.type(yLabel, "y")
         await user.click(button)
 
         const alert = await spy.mock.lastCall[0]
@@ -45,40 +42,23 @@ describe("integration test for alert message when no data input", function(){
         expect(alert).toBe("Error: No data specified!")
     })
 
-    /*
-
-    test("alert message when no x and y input", async() => {
-
-        
+    test("alert message when no x and y labels", async() => {
 
         initDomFromFiles(`${__dirname}/scatter.html`,`${__dirname}/scatter.js`)
 
-        const yInputElement = document.createElement('input');
-        yInputElement.setAttribute('type', 'number');
-        yInputElement.classList.add('y-value-input');
-        document.body.appendChild(yInputElement);
-
-        const xInputElement = document.createElement('input');
-        xInputElement.setAttribute('type', 'number');
-        xInputElement.classList.add('x-value-input');
-        document.body.appendChild(xInputElement);
-
         const spy = jest.spyOn(window, "alert")
 
-        //generate chart button, x & y label inputs
-        const button = document.getElementById("generate-chart-btn")
-        const xInput = document.querySelector('input.x-value-input[type="number"]');
-        const yInput = document.querySelector('input.y-value-input[type="number"]');
+        const button = domTesting.getByRole(document, "button", {name: 'Generate chart'})
+        const xInput = domTesting.getAllByLabelText(document, "X");
+        const yInput = domTesting.getAllByLabelText(document, "Y")
 
         const user = userEvent.setup()
-        await user.type(xInput, "1")
-        await user.type(yInput, "2")
+        await user.type(xInput[0], '1')
+        await user.type(yInput[0], '2')
         await user.click(button)
-        
+
         const alert = spy.mock.lastCall[0]
 
         expect(alert).toBe("Error: Must specify a label for both X and Y!")
     })
-
-    */
 })
